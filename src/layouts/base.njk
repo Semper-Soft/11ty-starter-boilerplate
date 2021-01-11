@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if title %}{{ title }} •{% endif %} {{ site.name }}</title></title>
+    <meta name="description" content="{% if description %}{{ description }}{% elif excerpt %}{{ excerpt }}{% else %}{{site.description}}{% endif %}">
+
+    <link rel="stylesheet" href="{% webpack 'main.css' %}">
+  </head>
+  <body>
+    <main>
+      {# include content #}
+      {{ content | safe }}
+    </main>
+
+    <script async defer src="{% webpack 'main.js' %}"></script>
+    <!-- LAST BUILD: {{ build.env }} {{ build.timestamp | dateToISO }} -->
+  </body>
+</html>
