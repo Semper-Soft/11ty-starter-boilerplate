@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if title %}{{ title }} •{% endif %} {{ site.name }}</title></title>
+    <title>{% if title %}{{ title }} •{% endif %} {{ site.name }}</title>
     <meta name="description" content="{% if description %}{{ description }}{% elif excerpt %}{{ excerpt }}{% else %}{{site.description}}{% endif %}">
 
     <link rel="stylesheet" href="{% webpack 'main.css' %}">

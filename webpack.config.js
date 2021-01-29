@@ -9,6 +9,7 @@ const config = require('./config');
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
+  mode: isProd ? 'production' : 'development',
   stats: {
     colors: true,
     preset: 'minimal'
@@ -19,34 +20,39 @@ module.exports = {
   devtool: isProd ? 'source-map' : 'cheap-module-source-map',
   entry: [
     path.resolve(__dirname, config.dir.input, 'assets/scripts/main.js'),
-    path.resolve(__dirname, config.dir.input, 'assets/styles/main.scss')
+    path.resolve(__dirname, config.dir.input, 'assets/styles/main.css')
   ],
   output: {
     filename: isProd ? '[name].[contenthash].js' : '[name].js',
     path: path.resolve(__dirname, config.dir.output, 'assets'),
     publicPath: '/assets/'
   },
-  ...(isProd && {
-    optimization: {
-      minimizer: [new TerserJSPlugin(), new CssMinimizerPlugin()]
-    }
-  }),
   plugins: [
     new WebpackManifestPlugin(),
     new MiniCssExtractPlugin({
       filename: isProd ? '[name].[contenthash].css' : '[name].css'
     })
   ],
+  ...(isProd && {
+    optimization: {
+      minimizer: [new TerserJSPlugin(), new CssMinimizerPlugin()]
+    }
+  }),
   module: {
     rules: [
       {
         test: /\.s?css/i,
+        exclude: /node_modules/,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
           {
             loader: 'postcss-loader',
-            options: { postcssOptions: { plugins: [PostCSSPresetEnv] } }
+            options: {
+              postcssOptions: {
+                plugins: [PostCSSPresetEnv]
+              }
+            }
           },
           'sass-loader'
         ]

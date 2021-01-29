@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const config = require('../config');
 
-const manifestPath = path.resolve(__dirname, config.dir.output, 'assets/manifest.json');
+const manifestPath = path.resolve(__dirname, '..', config.dir.output, 'assets/manifest.json');
 
 module.exports = {
   // Allow embedding webpack assets pulled out from `manifest.json`

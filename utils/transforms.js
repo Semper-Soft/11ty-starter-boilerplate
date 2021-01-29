@@ -3,11 +3,15 @@ const htmlmin = require('html-minifier');
 
 module.exports = {
   htmlmin: (content, outputPath) => {
-    if (process.env.ELEVENTY_ENV === 'production' && outputPath && outputPath.endsWith('.html')) {
+    if (process.env.NODE_ENV === 'production' && outputPath && outputPath.endsWith('.html')) {
       const minified = htmlmin.minify(content, {
-        useShortDoctype: true,
+        html5: true,
         removeComments: true,
-        collapseWhitespace: true
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true
       });
 
       return minified;

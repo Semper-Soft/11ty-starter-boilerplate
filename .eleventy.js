@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const lazyImagesPlugin = require('eleventy-plugin-lazyimages');
-const ErrorOverlay = require('eleventy-plugin-error-overlay');
+const NavigationPlugin = require('@11ty/eleventy-navigation');
+const ErrorOverlayPlugin = require('eleventy-plugin-error-overlay');
 
 const config = require('./config');
 const filters = require('./utils/filters');
@@ -13,18 +14,17 @@ const manifestPath = path.resolve(__dirname, config.dir.output, 'assets/manifest
 module.exports = (eleventyConfig) => {
   /**
    * Add plugins
-   *
    * @link https://www.11ty.dev/docs/plugins/
    */
-  eleventyConfig.addPlugin(ErrorOverlay);
+  eleventyConfig.addPlugin(ErrorOverlayPlugin);
+  eleventyConfig.addPlugin(NavigationPlugin);
   eleventyConfig.addPlugin(lazyImagesPlugin, {
     transformImgPath: (imgPath) =>
       imgPath.startsWith('http://') || imgPath.startsWith('https://') ? imgPath : `./src/${imgPath}`
   });
 
   /**
-   * Add filters
-   *
+   * Add Filters
    * @link https://www.11ty.io/docs/filters/
    */
   Object.keys(filters).forEach((filterName) => {
@@ -32,17 +32,7 @@ module.exports = (eleventyConfig) => {
   });
 
   /**
-   * Add shortcodes
-   *
-   * @link https://www.11ty.io/docs/shortcodes/
-   */
-  Object.keys(shortcodes).forEach((shortcodeName) => {
-    eleventyConfig.addNunjucksAsyncShortcode(shortcodeName, shortcodes[shortcodeName]);
-  });
-
-  /**
    * Add Transforms
-   *
    * @link https://www.11ty.io/docs/config/#transforms
    */
   Object.keys(transforms).forEach((transformName) => {
@@ -50,20 +40,26 @@ module.exports = (eleventyConfig) => {
   });
 
   /**
+   * Add Shortcodes
+   * @link https://www.11ty.io/docs/shortcodes/
+   */
+  eleventyConfig.addNunjucksAsyncShortcode('webpack', shortcodes.webpack);
+
+  /**
    * Passthrough file copy
-   *
    * @link https://www.11ty.io/docs/copy/
    */
   // eleventyConfig.addPassthroughCopy({ 'src/assets/scripts/sw.js': 'sw.js' });
   eleventyConfig.addPassthroughCopy('src/assets/images');
   eleventyConfig.addPassthroughCopy('src/assets/fonts');
-  // eleventyConfig.addPassthroughCopy('src/assets/favicon.ico');
+  eleventyConfig.addPassthroughCopy('src/favicon.ico');
   // eleventyConfig.addPassthroughCopy('src/site.webmanifest');
   eleventyConfig.addPassthroughCopy('src/robots.txt');
+  // Everything inside static is copied to dist as is
+  eleventyConfig.addPassthroughCopy('src/assets/static');
 
   /**
    * Add layout aliases
-   *
    * @link https://www.11ty.dev/docs/layouts/#layout-aliasing
    */
   eleventyConfig.addLayoutAlias('base', 'base.njk');
@@ -71,14 +67,12 @@ module.exports = (eleventyConfig) => {
 
   /**
    * Opts in to a full deep merge when combining the Data Cascade.
-   *
    * @link https://www.11ty.dev/docs/data-deep-merge/#data-deep-merge
    */
   eleventyConfig.setDataDeepMerge(true);
 
   /**
    * Override BrowserSync Server options
-   *
    * @link https://www.11ty.dev/docs/config/#override-browsersync-server-options
    */
   eleventyConfig.setBrowserSyncConfig({
@@ -102,8 +96,7 @@ module.exports = (eleventyConfig) => {
 
   return {
     dir: config.dir,
-    templateFormats: ['md', 'njk'],
-    markdownTemplateEngine: 'njk',
+    templateFormats: ['md', 'njk', 'md'],
     htmlTemplateEngine: 'njk',
     passthroughFileCopy: true
   };
