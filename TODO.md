@@ -1,3 +1,3 @@
 # TODO
 
-- [] babel for transpiling js
+- [] image optimization

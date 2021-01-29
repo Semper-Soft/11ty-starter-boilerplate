@@ -52,9 +52,7 @@ module.exports = (eleventyConfig) => {
   // eleventyConfig.addPassthroughCopy({ 'src/assets/scripts/sw.js': 'sw.js' });
   eleventyConfig.addPassthroughCopy('src/assets/images');
   eleventyConfig.addPassthroughCopy('src/assets/fonts');
-  eleventyConfig.addPassthroughCopy('src/favicon.ico');
   // eleventyConfig.addPassthroughCopy('src/site.webmanifest');
-  eleventyConfig.addPassthroughCopy('src/robots.txt');
   // Everything inside static is copied to dist as is
   eleventyConfig.addPassthroughCopy('src/assets/static');
 
@@ -70,6 +68,9 @@ module.exports = (eleventyConfig) => {
    * @link https://www.11ty.dev/docs/data-deep-merge/#data-deep-merge
    */
   eleventyConfig.setDataDeepMerge(true);
+
+  // This allows Eleventy to watch for file changes during local development.
+  eleventyConfig.setUseGitIgnore(false);
 
   /**
    * Override BrowserSync Server options

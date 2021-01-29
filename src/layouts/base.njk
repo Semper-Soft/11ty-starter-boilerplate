@@ -6,15 +6,28 @@
     <title>{% if title %}{{ title }} •{% endif %} {{ site.name }}</title>
     <meta name="description" content="{% if description %}{{ description }}{% elif excerpt %}{{ excerpt }}{% else %}{{site.description}}{% endif %}">
 
+    {# include main.css #}
     <link rel="stylesheet" href="{% webpack 'main.css' %}">
+
+    {# include static assets e.g. favicon, fonts etc #}
+    <link rel="icon" type="image/png" href="{{ site.images.favicon }}">
   </head>
+
   <body>
-    <main>
+    <main class="wrapper flex flex-col min-h-screen">
+      {# include header #}
+      {% include "components/header.njk" %}
+
       {# include content #}
       {{ content | safe }}
+
+      {# include footer #}
+      {% include "components/footer.njk" %}
     </main>
 
+    {# include scripts #}
     <script async defer src="{% webpack 'main.js' %}"></script>
+
     <!-- LAST BUILD: {{ build.env }} {{ build.timestamp | dateToISO }} -->
   </body>
 </html>

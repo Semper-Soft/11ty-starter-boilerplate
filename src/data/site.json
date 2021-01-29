@@ -1,5 +1,10 @@
 {
   "name": "11ty Starter Boilerplate",
   "description": "An Eleventy starter project",
-  "lang": "en"
+  "lang": "en",
+  "url": "www://example.com",
+  "images": {
+    "logo": "/assets/images/logo.svg",
+    "favicon": "/assets/images/favicon.ico"
+  }
 }
